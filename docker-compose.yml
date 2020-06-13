@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web:
+    # container must be started in interactive mode ('-it') in order for the react app to run
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # override command of Dockerfile.dev
+    command: ["npm", "run", "test"]
